@@ -26,7 +26,6 @@ pnpm-debug.log*
 # BACKEND (Node.js)
 # ============================
 backend/node_modules/
-backend/package-lock.json
 backend/pnpm-lock.yaml
 backend/yarn.lock
 
