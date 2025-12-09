@@ -1,0 +1,61 @@
+# ============================
+# GLOBAL IGNORE RULES
+# ============================
+# OS files
+.DS_Store
+Thumbs.db
+
+# IDE folders
+.vscode/
+.idea/
+
+# Logs
+*.log
+logs/
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+
+# Environment variables
+.env
+.env.local
+.env.*.local
+
+
+# ============================
+# BACKEND (Node.js)
+# ============================
+backend/node_modules/
+backend/package-lock.json
+backend/pnpm-lock.yaml
+backend/yarn.lock
+
+# Dist / build
+backend/dist/
+backend/build/
+backend/tmp/
+
+
+# ============================
+# FRONTEND (React)
+# ============================
+frontend/node_modules/
+frontend/package-lock.json
+frontend/pnpm-lock.yaml
+frontend/yarn.lock
+
+# React build output
+frontend/build/
+frontend/dist/
+
+# Cache
+frontend/.cache/
+frontend/.parcel-cache/
+
+
+# ============================
+# MISC
+# ============================
+*.tmp
+*.swp
+*.swo
