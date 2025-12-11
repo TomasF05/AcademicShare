@@ -10,4 +10,4 @@ router.post('/register', registerUser);
 // Rota para Login (http://localhost:5000/api/users/login)
 router.post('/login', loginUser);
 
-module.exports = router;
+module.exports = router; 

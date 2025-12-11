@@ -1,0 +1,130 @@
+/* LAYOUT PRINCIPAL (DESKTOP) */
+.auth-container {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background-color: #f4f6fb;
+  align-items: center;
+  justify-content: center;
+  padding: 0 80px;
+  gap: 140px;
+  box-sizing: border-box;
+}
+
+.auth-left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.auth-logo {
+  font-size: 42px;
+  font-weight: 700;
+  color: #2b4d8f;
+}
+
+.auth-right {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.auth-box {
+  width: 420px;
+  background: white;
+  padding: 40px 45px;
+  border-radius: 14px;
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.15);
+}
+
+.auth-title {
+  font-size: 26px;
+  font-weight: 700;
+  color: #2b4d8f;
+  text-align: center;
+  margin-bottom: 25px;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 6px;
+  border: 1px solid #ddd;
+  background-color: #e9ecef;
+  margin-bottom: 18px;
+  box-sizing: border-box; 
+}
+
+.auth-button {
+  width: 20%;
+  padding: 8px;
+  background-color: #2b4d8f;
+  color: white;
+  border-radius: 6px;
+  border: none;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 600;
+  box-sizing: border-box;
+
+  display: block;
+  margin: 0 auto;
+}
+
+.auth-button:hover {
+  background-color: #1f3870;
+}
+
+.auth-footer {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.auth-link {
+  color: #2b4d8f;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-link:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVO (TABLET + TELEFONE) */
+@media (max-width: 992px) {
+  .auth-container {
+    flex-direction: column;
+    padding: 40px 20px;
+    justify-content: center;
+    text-align: center;
+    gap: 20px;
+  }
+
+  .auth-left {
+    align-items: center;
+  }
+
+  .auth-right {
+    width: 100%;
+  }
+
+  .auth-box {
+    width: 100%;
+    max-width: 420px;
+  }
+}
+
+@media (max-width: 480px) {
+  .auth-container {
+    padding: 20px 10px;
+  }
+
+  .auth-logo {
+    font-size: 32px;
+  }
+
+  .auth-box {
+    padding: 25px 20px;
+  }
+}
