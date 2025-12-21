@@ -13,14 +13,23 @@
 
 .auth-left {
   display: flex;
-  flex-direction: column;
+  flex-direction: row; /* Alinha logo e texto lado a lado */
+  align-items: center; /* Centraliza verticalmente a imagem e o texto */
   justify-content: center;
+  gap: 20px; /* Espaço entre a imagem e o texto */
+  /* Remova o flex-direction: column anterior */
+}
+
+.auth-logo-img {
+  width: 70px; /* Ajuste o tamanho para combinar com a altura do texto */
+  height: auto;
 }
 
 .auth-logo {
   font-size: 42px;
   font-weight: 700;
   color: #2b4d8f;
+  margin: 0; /* Importante para não desalinhar com a imagem */
 }
 
 .auth-right {
@@ -46,13 +55,23 @@
 }
 
 .auth-input {
-  width: 100%;
+  width: 80%;
+  display: block; /* Força o input a ocupar a sua própria linha */
+  margin: 0 auto 18px auto; /* Centra horizontalmente (auto nas laterais) e mantém o espaço inferior (18px) */
   padding: 14px;
   border-radius: 6px;
   border: 1px solid #ddd;
   background-color: #e9ecef;
   margin-bottom: 18px;
   box-sizing: border-box; 
+}
+
+.auth-actions {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 30px; /* Espaço entre os botões */
+  margin-top: 10px;
 }
 
 .auth-button {
@@ -66,13 +85,53 @@
   font-size: 15px;
   font-weight: 600;
   box-sizing: border-box;
+}
 
-  display: block;
-  margin: 0 auto;
+.auth-back-button {
+  text-decoration: none;
+  font-size: 15px;
+  font-weight: 600;
+  color: #2b4d8f;
+  padding: 10px 25px;
+  border: 1px solid #2b4d8f;
+  border-radius: 6px;
+  transition: all 0.3s ease;
 }
 
 .auth-button:hover {
   background-color: #1f3870;
+}
+
+.auth-footer-stack {
+  display: flex;
+  flex-direction: column; /* Coloca um por baixo do outro */
+  align-items: center;    /* Centra horizontalmente */
+  gap: 15px;
+  width: 80%;
+  margin: 20px auto 0 auto;
+}
+
+.auth-text-small {
+  margin: 0;
+  font-size: 14px;
+  color: #444;
+}
+
+.auth-link-blue {
+  color: #2b4d8f;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.auth-button-full {
+  width: 20%;
+  padding: 8px;
+  background-color: #2b4d8f;
+  color: white;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
 }
 
 .auth-footer {
@@ -83,12 +142,54 @@
 
 .auth-link {
   color: #2b4d8f;
-  font-weight: 600;
   text-decoration: none;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
 }
 
 .auth-link:hover {
   text-decoration: underline;
+}
+
+.password-container {
+  position: relative;
+  width: 80%; /* Alinhado com a largura que definiste para os inputs */
+  margin: 0 auto; /* Centra o bloco da password */
+}
+
+/* Garante que o input de password ocupe a largura total do contentor (os 80%) */
+.password-container .auth-input {
+  width: 100%;
+  margin: 0 0 18px 0; /* Remove o margin auto individual para não conflituar */
+  padding-right: 40px; /* Espaço para o texto não ficar sob o ícone */
+}
+
+.password-toggle-icon {
+    position: absolute;
+    right: 15px; /* Ajusta esta distância para alinhar com o design */
+    top: 50%;
+    transform: translateY(-50%); /* Garante que fica sempre centrado verticalmente */
+    cursor: pointer;
+    color: #666;
+    display: flex;
+    align-items: center;
+    z-index: 2; /* Garante que fica por cima do input */
+}
+
+/* Esconde o ícone de revelar password nativo do Microsoft Edge */
+.auth-input::-ms-reveal,
+.auth-input::-ms-clear {
+    display: none;
+}
+
+/* Esconde ícones nativos em outros browsers baseados em Webkit, se aparecerem */
+.auth-input::-webkit-contacts-auto-fill-button,
+.auth-input::-webkit-credentials-auto-fill-button {
+    visibility: hidden;
+    display: none !important;
+    pointer-events: none;
 }
 
 /* RESPONSIVO (TABLET + TELEFONE) */
@@ -102,7 +203,8 @@
   }
 
   .auth-left {
-    align-items: center;
+    flex-direction: row; /* Mantém lado a lado mesmo no telemóvel */
+    margin-bottom: 20px;
   }
 
   .auth-right {

@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import "../styles/auth.css";
+import logo from "../assets/logo.png";
 
 const Register = () => {
   const [name, setName] = useState("");
@@ -13,6 +14,18 @@ const Register = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError("");
+
+    // 1. VALIDAÇÃO DA PASSWORD (8 caracteres)
+    if (password.length < 8) {
+      setError("A password deve ter pelo menos 8 caracteres.");
+      return;
+    }
+
+    // 2. VALIDAÇÃO DO EMAIL INSTITUCIONAL (@ipvc.pt)
+    if (!email.endsWith("@ipvc.pt")) {
+      setError("Deve utilizar um email institucional (@ipvc.pt).");
+      return;
+    }
 
     try {
       const res = await fetch(`${API_URL}/users/register`, {
@@ -38,6 +51,7 @@ const Register = () => {
   return (
     <div className="auth-container">
       <div className="auth-left">
+        <img src={logo} alt="AcademicShare Logo" className="auth-logo-img" />
         <h1 className="auth-logo">AcademicShare</h1>
       </div>
 
@@ -49,9 +63,12 @@ const Register = () => {
             <input
               className="auth-input"
               type="email"
-              placeholder="Email institucional"
+              placeholder="Ex: aluno@ipvc.pt"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
+              // Validação nativa do browser para terminar em @ipvc.pt
+              pattern=".+@ipvc\.pt"
+              title="O email deve terminar em @ipvc.pt"
               required
             />
 
@@ -67,20 +84,25 @@ const Register = () => {
             <input
               className="auth-input"
               type="password"
-              placeholder="Password"
+              placeholder="Password (mín. 8 caracteres)"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              minLength={8}
               required
             />
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p style={{ color: "red", fontSize: "14px", textAlign: "center", marginBottom: "10px" }}>{error}</p>}
 
-            <button className="auth-button" type="submit">Criar</button>
+            <div className="auth-actions">
+              <Link to="/" className="auth-link">
+                <span>←</span> Voltar
+              </Link>
+              <button className="auth-button" type="submit">
+                Criar
+              </button>
+            </div>
           </form>
 
-          <div className="auth-footer">
-            <Link to="/" className="auth-link">← Voltar</Link>
-          </div>
         </div>
       </div>
     </div>
