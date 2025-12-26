@@ -32,7 +32,11 @@ const Login = () => {
 
       // Guarda o token E os dados do utilizador (nome, etc)
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify({ name: data.name, id: data.id })); // Adiciona esta linha
+      localStorage.setItem("user", JSON.stringify({ 
+        name: data.name, 
+        id: data.id, 
+        role: data.role 
+      })); 
       window.location.href = "/dashboard";
 
     } catch (err) {

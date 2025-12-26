@@ -35,13 +35,14 @@ const Dashboard = () => {
     }
   };
 
-  // 2. EXECUTAR AO ENTRAR NA PÁGINA
+// 2. EXECUTAR AO ENTRAR NA PÁGINA
   useEffect(() => {
     const savedUser = localStorage.getItem("user");
     if (savedUser) setUser(JSON.parse(savedUser));
     
     fetchDisciplinas(); // Procura as disciplinas logo ao abrir
   }, []);
+
 
   // 1. FUNÇÃO PARA CRIAR NOVA (LIMPA OS CAMPOS)
   const handleOpenCreate = () => {
