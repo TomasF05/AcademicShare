@@ -234,3 +234,69 @@
   color: #ff4d4d;
   font-weight: 600;
 }
+
+/* O contentor que envolve todos os cartões */
+.disciplinas-grid {
+  display: grid;
+  /* Cria colunas automáticas: cada uma com no mínimo 300px */
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 25px;
+  padding: 20px 0;
+}
+
+/* O cartão individual */
+.disciplina-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  
+  /* Altura mínima para garantir o formato de "caixa" */
+  min-height: 200px; 
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between; /* Empurra o footer para o fim */
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.disciplina-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 12px 20px rgba(0, 0, 0, 0.1);
+  border-color: #2b4d8f;
+}
+
+/* Título (Nome da Disciplina) */
+.disciplina-card h3 {
+  margin: 0 0 10px 0;
+  color: #1e3a8a; /* Azul escuro do mockup */
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* Descrição */
+.disciplina-card p {
+  margin: 0;
+  color: #64748b; /* Cinza suave para leitura */
+  font-size: 0.95rem;
+  line-height: 1.5;
+  /* Limita a 3 linhas para manter os cartões alinhados */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Rodapé (Criado por) */
+.card-footer {
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #f1f5f9;
+  font-size: 0.85rem;
+  color: #94a3b8;
+}
+
+.card-footer strong {
+  color: #334155;
+  margin-left: 4px;
+}
