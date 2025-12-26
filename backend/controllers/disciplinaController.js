@@ -33,4 +33,49 @@ const getDisciplinas = async (req, res) => {
     }
 };
 
-module.exports = { addDisciplina, getDisciplinas };
+const updateDisciplina = async (req, res) => {
+    try {
+        const disciplina = await Disciplina.findById(req.params.id);
+
+        if (!disciplina) {
+            return res.status(404).json({ message: 'Disciplina não encontrada' });
+        }
+
+        if (disciplina.user.toString() !== req.user.id && req.user.role !== 'admin') {
+            return res.status(401).json({ message: 'Não tens permissão para editar esta disciplina' });
+        }
+
+        const disciplinaAtualizada = await Disciplina.findByIdAndUpdate(
+            req.params.id, 
+            req.body, 
+            { new: true }
+        );
+
+        res.status(200).json(disciplinaAtualizada);
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao atualizar disciplina' });
+    }
+};
+
+const deleteDisciplina = async (req, res) => {
+    try {
+        const disciplina = await Disciplina.findById(req.params.id);
+
+        if (!disciplina) {
+            return res.status(404).json({ message: 'Disciplina não encontrada' });
+        }
+
+        // Só quem criou a disciplina ou um admin podem eliminar
+        if (disciplina.user.toString() !== req.user.id && req.user.role !== 'admin') {
+            return res.status(401).json({ message: 'Não tens permissão para eliminar esta disciplina' });
+        }
+
+        await Disciplina.findByIdAndDelete(req.params.id);
+
+        res.status(200).json({ message: 'Disciplina eliminada com sucesso' });
+    } catch (error) {
+        res.status(500).json({ message: 'Erro ao eliminar disciplina' });
+    }
+};
+
+module.exports = { addDisciplina, getDisciplinas, updateDisciplina, deleteDisciplina };

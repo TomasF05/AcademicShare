@@ -277,7 +277,7 @@
 /* Descrição */
 .disciplina-card p {
   margin: 0;
-  color: #64748b; /* Cinza suave para leitura */
+  color: #64748b; 
   font-size: 0.95rem;
   line-height: 1.5;
   /* Limita a 3 linhas para manter os cartões alinhados */
@@ -299,4 +299,55 @@
 .card-footer strong {
   color: #334155;
   margin-left: 4px;
+}
+
+/* Layout do Rodapé do Cartão */
+.card-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid #f1f5f9;
+}
+
+/* Botões de Ação Minimalistas */
+.card-actions {
+  display: flex;
+  gap: 4px;
+}
+
+.btn-icon {
+  background: transparent;
+  border: none;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  color: #64748b; 
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+}
+
+
+.btn-icon.delete {
+  color: #ef4444; 
+}
+
+
+.btn-icon.delete:hover {
+  background-color: #fef2f2; 
+  color: #ef4444; 
+  transform: scale(1.1);
+}
+
+
+.btn-icon.edit {
+  color: #0284c7;;
+}
+
+.btn-icon.edit:hover {
+  background-color: #f0f9ff;
+  color: #0284c7;
+  transform: scale(1.1);
 }

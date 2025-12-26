@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import "../styles/dashboard.css";
 import logo from "../assets/logo.png";
+import { Pencil, Trash2 } from 'lucide-react';
 
 const Dashboard = () => {
   const [user, setUser] = useState(null);
@@ -9,13 +10,13 @@ const Dashboard = () => {
   const [showModal, setShowModal] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
   const [isSaving, setIsSaving] = useState(false);
-
-  // NOVO ESTADO: Para guardar a lista que vem do MongoDB
   const [disciplinas, setDisciplinas] = useState([]);
 
   // ESTADOS DO FORMULÁRIO
   const [nomeDisciplina, setNomeDisciplina] = useState("");
   const [descricao, setDescricao] = useState("");
+  const [isEditing, setIsEditing] = useState(false); // Diz se o modal é para editar
+  const [editId, setEditId] = useState(null);        // Guarda o ID da disciplina que estamos a editar
 
   const API_URL = import.meta.env.VITE_API_URL;
 
@@ -42,6 +43,24 @@ const Dashboard = () => {
     fetchDisciplinas(); // Procura as disciplinas logo ao abrir
   }, []);
 
+  // 1. FUNÇÃO PARA CRIAR NOVA (LIMPA OS CAMPOS)
+  const handleOpenCreate = () => {
+    setIsEditing(false);
+    setEditId(null);
+    setNomeDisciplina("");
+    setDescricao("");
+    setShowModal(true);
+  };
+
+  // 2. FUNÇÃO PARA EDITAR (PREENCHE OS CAMPOS)
+  const handleOpenEdit = (disc) => {
+    setIsEditing(true);
+    setEditId(disc._id);
+    setNomeDisciplina(disc.nome);
+    setDescricao(disc.descricao);
+    setShowModal(true);
+  };
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("user");
@@ -50,32 +69,61 @@ const Dashboard = () => {
 
   // 3. ENVIAR NOVA DISCIPLINA PARA O MONGODB
   const handleSubmitDisciplina = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
+        e.preventDefault();
+        const token = localStorage.getItem("token");
+        setIsSaving(true);
 
-    setIsSaving(true);
+        // Se estivermos a editar, usamos PUT e o ID. Se não, usamos POST normal.
+        const url = isEditing ? `${API_URL}/disciplinas/${editId}` : `${API_URL}/disciplinas`;
+        const method = isEditing ? "PUT" : "POST";
 
-    try {
-      const res = await fetch(`${API_URL}/disciplinas`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization": `Bearer ${token}`
-        },
-        body: JSON.stringify({ nome: nomeDisciplina, descricao: descricao }),
-      });
+        try {
+          const res = await fetch(url, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify({ nome: nomeDisciplina, descricao: descricao }),
+          });
 
-      if (res.ok) {
-        setShowModal(false);
-        setNomeDisciplina("");
-        setDescricao("");
-        fetchDisciplinas(); // Atualiza a lista automaticamente após guardar!
-      }
-    } catch (err) {
-      alert("Erro ao ligar ao servidor");
+          if (res.ok) {
+            setShowModal(false);
+            setNomeDisciplina("");
+            setDescricao("");
+            setIsEditing(false); // Resetar para o estado original
+            fetchDisciplinas();
+          }
+        } catch (err) {
+          alert("Erro ao gravar");
+        } finally {
+          setIsSaving(false);
+        }
+  };
 
-    }finally {
-    setIsSaving(false); 
+
+const handleDelete = async (id) => {
+  if (!window.confirm("Tens a certeza que queres eliminar esta disciplina?")) return;
+
+  const token = localStorage.getItem("token");
+
+  try {
+    const res = await fetch(`${API_URL}/disciplinas/${id}`, {
+      method: "DELETE",
+      headers: {
+        "Authorization": `Bearer ${token}`
+      },
+    });
+
+    if (res.ok) {
+      // Atualiza a lista automaticamente após apagar
+      fetchDisciplinas();
+    } else {
+      const errorData = await res.json();
+      alert(errorData.message || "Erro ao eliminar");
+    }
+  } catch (err) {
+    console.error("Erro na ligação:", err);
   }
 };
 
@@ -123,7 +171,7 @@ const Dashboard = () => {
       <main className="dashboard-content">
         <div className="content-header">
           <h2 className="main-title">Minhas Disciplinas</h2>
-          <button className="btn-add" onClick={() => setShowModal(true)}>
+          <button className="btn-add" onClick={handleOpenCreate}>
             + Nova Disciplina
           </button>
         </div>
@@ -137,7 +185,19 @@ const Dashboard = () => {
                   <p>{disc.descricao}</p>
                 </div>
                 <div className="card-footer">
-                  Criada por: <strong>{disc.user?.name || "Colega"}</strong>
+                  <span>Criada por: <strong>{disc.user?.name || "Colega"}</strong></span>
+
+                  {/* SÓ MOSTRA SE: For o dono (IDs iguais) OU se fores admin */}
+                  {(disc.user?._id === user?.id || user?.role === 'admin') && (
+                    <div className="card-actions">
+                      <button onClick={() => handleOpenEdit(disc)} className="btn-icon edit">
+                        <Pencil size={18} />
+                      </button>
+                      <button onClick={() => handleDelete(disc._id)} className="btn-icon delete">
+                        <Trash2 size={18} />
+                      </button>
+                    </div>
+                  )}
                 </div>
               </div>
             ))
@@ -154,7 +214,7 @@ const Dashboard = () => {
       {showModal && (
         <div className="modal-overlay">
           <div className="modal-box">
-            <h3>Adicionar Nova Disciplina</h3>
+            <h3>{isEditing ? "Editar Disciplina" : "Adicionar Nova Disciplina"}</h3>
             <form onSubmit={handleSubmitDisciplina}>
               <input 
                 type="text" 
