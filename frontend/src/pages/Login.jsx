@@ -59,7 +59,7 @@ const Login = () => {
             <input
               className="auth-input"
               type="email"
-              placeholder="Username ou email"
+              placeholder="Email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               required
@@ -87,7 +87,7 @@ const Login = () => {
 
             <div className="auth-footer-stack">
               <p className="auth-text-small">
-                Ainda não tem conta? <Link to="/register" className="auth-link-blue">Sign in</Link>
+                Ainda não tem conta? <Link to="/register" className="auth-link-blue">Registar</Link>
               </p>
               <button className="auth-button-full" type="submit">Entrar</button>
             </div>

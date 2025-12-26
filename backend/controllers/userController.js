@@ -31,6 +31,7 @@ const registerUser = async (req, res) => {
             id: newUser.id,
             name: newUser.name,
             email: newUser.email,
+            role: newUser.role,
             token: generateToken(newUser.id)
         });
     }catch (error){
