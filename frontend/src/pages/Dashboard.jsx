@@ -1,9 +1,11 @@
+import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/dashboard.css";
 import logo from "../assets/logo.png";
 import { Pencil, Trash2 } from 'lucide-react';
 
 const Dashboard = () => {
+  const navigate = useNavigate();
   const [user, setUser] = useState(null);
   
   // ESTADOS DE CONTROLO
@@ -180,7 +182,7 @@ const handleDelete = async (id) => {
        <div className="disciplinas-grid">
           {disciplinas.length > 0 ? (
             disciplinas.map((disc) => (
-              <div key={disc._id} className="disciplina-card">
+              <div key={disc._id} className="disciplina-card" onClick={() => navigate(`/disciplinas/${disc._id}`)} style={{ cursor: "pointer"}}>
                 <div className="card-content">
                   <h3>{disc.nome}</h3>
                   <p>{disc.descricao}</p>

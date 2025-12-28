@@ -351,3 +351,13 @@
   color: #0284c7;
   transform: scale(1.1);
 }
+
+/* Aplicado na pagina DisciplinaDetalhe */
+
+.back-link {
+  cursor: pointer;
+  color: #555;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+

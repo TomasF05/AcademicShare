@@ -4,6 +4,7 @@ const dotenv = require('dotenv');
 const connectDB = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
+const aulaRoutes = require("./routes/aulaRoutes");
 
 dotenv.config();
 
@@ -18,6 +19,8 @@ app.use(express.json()); // transforma  os dados que chegam ( texto) num JSON. s
 
 app.use('/api/users', userRoutes);
 app.use('/api/disciplinas', disciplinaRoutes);
+app.use("/api", aulaRoutes);
+
 
 app.get('/', (req, res) => {
     res.status(200).send('Academic Share a funcionar!');
