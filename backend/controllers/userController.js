@@ -66,5 +66,45 @@ const loginUser = async (req, res) => {
     }
 };
 
+const getMe = async (req, res) => {
+  try {
+    // O req.user é preenchido pelo middleware 'protect'
+    const user = await User.findById(req.user.id).select('-password');
+    res.status(200).json(user);
+  } catch (error) {
+    res.status(500).json({ message: 'Erro ao obter dados do utilizador' });
+  }
+};
 
-module.exports = { registerUser, loginUser };
+const updatePassword = async (req, res) => {
+  const { passwordAntiga, novaPassword } = req.body;
+
+  try {
+    // Verificar se o utilizador existe (req.user vem do authMiddleware)
+    const user = await User.findById(req.user.id);
+    
+    if (!user) {
+      return res.status(404).json({ message: "Utilizador não encontrado." });
+    }
+
+    // CORREÇÃO: Usar bcryptjs em vez de bcrypt
+    const isMatch = await bcryptjs.compare(passwordAntiga, user.password);
+    
+    if (!isMatch) {
+      return res.status(400).json({ message: "A password atual está incorreta." });
+    }
+
+    // Gerar novo salt e encriptar a nova password
+    const salt = await bcryptjs.genSalt(10);
+    user.password = await bcryptjs.hash(novaPassword, salt);
+    
+    await user.save();
+    res.json({ message: "Password atualizada com sucesso!" });
+    
+  } catch (error) {
+    console.error("Erro ao atualizar password:", error);
+    res.status(500).json({ message: "Erro interno no servidor." });
+  }
+};
+
+module.exports = { registerUser, loginUser, getMe, updatePassword};

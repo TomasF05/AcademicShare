@@ -157,8 +157,20 @@ const handleDelete = async (id) => {
                   <strong>{user?.name || "Utilizador"}</strong>
                 </div>
                 <div className="dropdown-divider"></div>
-                <button className="dropdown-item">O meu perfil</button>
-                <button className="dropdown-item">Configurações</button>
+                
+                {/* ADICIONADO: Navegação para o perfil */}
+                <button className="dropdown-item" onClick={() => {
+                  setIsProfileOpen(false);
+                  navigate("/perfil");
+                }}>
+                  O meu perfil
+                </button>
+                <button className="dropdown-item" onClick={() => {
+                      setIsProfileOpen(false);
+                      navigate("/configuracoes");
+                    }}>
+                      Configurações
+                </button>              
               </div>
             )}
           </div>
