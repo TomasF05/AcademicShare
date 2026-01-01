@@ -52,8 +52,8 @@ const Configuracoes = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
           <h2 className="main-title" style={{ marginTop: '20px', marginBottom: '30px' }}>Configurações de Segurança</h2>
 
-          <div className="modal-box" style={{ width: "100%", maxWidth: "500px", margin: "0 auto" }}>
-            <h3 style={{ marginBottom: '20px', color: '#2b4d8f' }}>Alterar Password</h3>
+          <div className="modal-box" style={{ width: "100%", maxWidth: "400px", margin: "0 auto" }}>
+            <h3 style={{ marginBottom: '20px', color: '#2b4d8f', textAlign: "center", fontSize: "22px" }}>Alterar Password</h3>
             <form onSubmit={handleUpdatePassword}>
               <input 
                 type="password" placeholder="Password Atual" className="modal-input"
@@ -74,7 +74,7 @@ const Configuracoes = () => {
                 </p>
               )}
 
-              <button type="submit" className="btn-save" style={{ width: "100%", padding: "12px" }}>
+              <button type="submit" className="btn-save" style={{ width: "45%", padding: "9px",  margin: "0 auto", display: "block" }}>
                 Atualizar Password
               </button>
             </form>

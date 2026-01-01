@@ -46,7 +46,7 @@ const Perfil = () => {
         <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', width: '100%' }}>
             <h2 className="main-title" style={{ marginTop: '20px', marginBottom: '30px' }}>O meu Perfil</h2>
 
-            <div className="modal-box" style={{ width: '100%', maxWidth: '500px', margin: '0 auto' }}>
+            <div className="modal-box" style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}>
             <div style={{ marginBottom: '20px' }}>
                 <label style={{ fontWeight: 'bold', display: 'block', marginBottom: '8px' }}>Nome:</label>
                 <p className="modal-input" style={{ background: '#f9f9f9', marginBottom: '0' }}>{userData?.name}</p>

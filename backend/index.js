@@ -5,6 +5,8 @@ const connectDB = require('./config/database');
 const userRoutes = require('./routes/userRoutes');
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
 const aulaRoutes = require("./routes/aulaRoutes");
+const materialRoutes = require("./routes/materialRoutes");
+
 
 dotenv.config();
 
@@ -16,10 +18,13 @@ app.use(cors()); // permitir que o frontend aceda ao backend mesmo estando em do
 
 app.use(express.json()); // transforma  os dados que chegam ( texto) num JSON. sem isto, o backend nao entenderia o que o frontend envia
 
+app.use("/uploads", express.static("uploads")); // para servir os ficheiros
 
 app.use('/api/users', userRoutes);
 app.use('/api/disciplinas', disciplinaRoutes);
 app.use("/api", aulaRoutes);
+app.use("/api", materialRoutes);
+
 
 
 app.get('/', (req, res) => {

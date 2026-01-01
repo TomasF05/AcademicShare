@@ -32,26 +32,36 @@ const Header = () => {
 
         <button className="btn-submit">Submeter</button>
 
-        {/* PERFIL */}
-        <div className="user-profile-container">
-          <div
-            className="user-profile"
-            onClick={() => setIsProfileOpen(!isProfileOpen)}
-          >
-            <span className="profile-icon">👤</span>
-          </div>
 
-          {isProfileOpen && (
-            <div className="profile-dropdown">
-              <div className="dropdown-header">
-                <strong>{user?.name || "Utilizador"}</strong>
-              </div>
-              <div className="dropdown-divider"></div>
-              <button className="dropdown-item">O meu perfil</button>
-              <button className="dropdown-item">Configurações</button>
+        {/* PERFIL (SEM O BOTÃO SAIR DENTRO) */}
+          <div className="user-profile-container">
+            <div className="user-profile" onClick={() => setIsProfileOpen(!isProfileOpen)}>
+              <span className="profile-icon">👤</span>
             </div>
-          )}
-        </div>
+
+            {isProfileOpen && (
+              <div className="profile-dropdown">
+                <div className="dropdown-header">
+                  <strong>{user?.name || "Utilizador"}</strong>
+                </div>
+                <div className="dropdown-divider"></div>
+                
+                {/* ADICIONADO: Navegação para o perfil */}
+                <button className="dropdown-item" onClick={() => {
+                  setIsProfileOpen(false);
+                  navigate("/perfil");
+                }}>
+                  O meu perfil
+                </button>
+                <button className="dropdown-item" onClick={() => {
+                      setIsProfileOpen(false);
+                      navigate("/configuracoes");
+                    }}>
+                      Configurações
+                </button>              
+              </div>
+            )}
+          </div>
 
         <button className="btn-logout" onClick={handleLogout}>
           ⊙ Sair

@@ -1,30 +1,37 @@
 const mongoose = require("mongoose");
 
-const materialSchema = mongoose.Schema({
-  aula: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "Aula",
+const materialSchema = mongoose.Schema(
+  {
+    aula: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "Aula",
+    },
+    titulo: {
+      type: String,
+      required: true,
+    },
+    descricao: {
+      type: String,
+    },
+    tipo: {
+      type: String,
+      enum: ["file", "link"],
+      required: true,
+    },
+    url: {
+      type: String,
+      required: true, // link OU caminho do ficheiro
+    },
+    user: {
+      type: mongoose.Schema.Types.ObjectId,
+      required: true,
+      ref: "User",
+    },
   },
-  titulo: {
-    type: String,
-    required: true,
-  },
-  tipo: {
-    type: String,
-    enum: ["pdf", "doc", "imagem", "link"],
-    required: true,
-  },
-  ficheiroUrl: {
-    type: String,
-  },
-  user: {
-    type: mongoose.Schema.Types.ObjectId,
-    required: true,
-    ref: "User",
+  {
+    timestamps: true,
   }
-}, {
-  timestamps: true
-});
+);
 
 module.exports = mongoose.model("Material", materialSchema);
