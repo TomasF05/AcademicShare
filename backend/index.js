@@ -6,13 +6,19 @@ const userRoutes = require('./routes/userRoutes');
 const disciplinaRoutes = require('./routes/disciplinaRoutes');
 const aulaRoutes = require("./routes/aulaRoutes");
 const materialRoutes = require("./routes/materialRoutes");
+const http = require('http'); 
+const setupSocket = require('./socket/socketHandler'); 
 
 
 dotenv.config();
 
 connectDB();
 
-const app = express(); 
+const app = express();
+const server = http.createServer(app); 
+
+// Inicializa o Socket.io passando o servidor http
+setupSocket(server);
 
 app.use(cors()); // permitir que o frontend aceda ao backend mesmo estando em dominios diferentes
 
@@ -33,7 +39,7 @@ app.get('/', (req, res) => {
 
 const PORT = process.env.PORT;
 
-app.listen(PORT, () => {
-    console.log(`Servidor a correr na porta ${PORT}`);
+server.listen(PORT, () => {
+    console.log(`Servidor e chat a correr na porta ${PORT}`);
 });
 

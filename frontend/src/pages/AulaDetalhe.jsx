@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 import "../styles/dashboard.css";
 import Header from "../components/Header";
+import ChatAula from "./ChatAula";
 
 const AulaDetalhe = () => {
   const { id } = useParams(); // aulaId
@@ -194,11 +195,9 @@ const AulaDetalhe = () => {
           )
         )}
 
-        {tab === "chat" && (
-          <div className="empty-state">
-            <p>Chat em tempo real (em breve...)</p>
-          </div>
-        )}
+          {tab === "chat" && (
+            <ChatAula aulaId={id} />
+          )}
       </main>
 
       {/* MODAL */}
