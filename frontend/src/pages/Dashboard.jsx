@@ -7,6 +7,8 @@ import { Pencil, Trash2 } from 'lucide-react';
 const Dashboard = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
+
+  const [searchTerm, setSearchTerm] = useState("");
   
   // ESTADOS DE CONTROLO
   const [showModal, setShowModal] = useState(false);
@@ -130,6 +132,11 @@ const handleDelete = async (id) => {
   }
 };
 
+const disciplinasFiltradas = disciplinas.filter(disc => 
+  disc.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
+  disc.descricao.toLowerCase().includes(searchTerm.toLowerCase())
+);
+
   return (
     <div className="dashboard-container">
       {/* HEADER / NAVBAR */}
@@ -186,14 +193,26 @@ const handleDelete = async (id) => {
       <main className="dashboard-content">
         <div className="content-header">
           <h2 className="main-title">Minhas Disciplinas</h2>
+          
+          <div className="search-container">
+            <span className="search-icon">🔍</span>
+            <input 
+              type="text" 
+              placeholder="Pesquisar disciplinas..." 
+              className="search-input"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+            />
+          </div>
+
           <button className="btn-add" onClick={handleOpenCreate}>
             + Nova Disciplina
           </button>
         </div>
 
        <div className="disciplinas-grid">
-          {disciplinas.length > 0 ? (
-            disciplinas.map((disc) => (
+          {disciplinasFiltradas.length > 0 ? (
+            disciplinasFiltradas.map((disc) => (
               <div key={disc._id} className="disciplina-card" onClick={() => navigate(`/disciplinas/${disc._id}`)} style={{ cursor: "pointer"}}>
                 <div className="card-content">
                   <h3>{disc.nome}</h3>
@@ -202,13 +221,12 @@ const handleDelete = async (id) => {
                 <div className="card-footer">
                   <span>Criada por: <strong>{disc.user?.name || "Colega"}</strong></span>
 
-                  {/* SÓ MOSTRA SE: For o dono (IDs iguais) OU se fores admin */}
                   {(disc.user?._id === user?.id || user?.role === 'admin') && (
                     <div className="card-actions">
-                      <button onClick={() => handleOpenEdit(disc)} className="btn-icon edit">
+                      <button onClick={(e) => { e.stopPropagation(); handleOpenEdit(disc); }} className="btn-icon edit">
                         <Pencil size={18} />
                       </button>
-                      <button onClick={() => handleDelete(disc._id)} className="btn-icon delete">
+                      <button onClick={(e) => { e.stopPropagation(); handleDelete(disc._id); }} className="btn-icon delete">
                         <Trash2 size={18} />
                       </button>
                     </div>
@@ -218,8 +236,8 @@ const handleDelete = async (id) => {
             ))
           ) : (
             <div className="empty-state">
-              <p>Ainda não há disciplinas adicionadas.</p>
-              <p>Clica em "+ Nova Disciplina" para começar.</p>
+              <p>{searchTerm ? `Nenhuma disciplina encontrada para "${searchTerm}"` : "Ainda não há disciplinas adicionadas."}</p>
+              {!searchTerm && <p>Clica em "+ Nova Disciplina" para começar.</p>}
             </div>
           )}
         </div>

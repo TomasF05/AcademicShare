@@ -173,8 +173,7 @@ const AulaDetalhe = () => {
 
                     {material.tipo === "file" ? (
                       <a
-                        href={`${import.meta.env.VITE_BACKEND_URL}${material.url}`}
-                        target="_blank"
+                      href={`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}${material.url}`}                        target="_blank"
                         rel="noreferrer"
                       >
                         📄 Abrir ficheiro

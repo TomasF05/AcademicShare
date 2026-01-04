@@ -405,3 +405,57 @@
   text-decoration: underline;
 }
 
+
+.content-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  gap: 20px; /* Distância entre os elementos */
+  margin-bottom: 30px;
+  flex-wrap: nowrap; /* Impede que os itens saltem para baixo */
+}
+
+.main-title {
+  font-size: 24px;
+  font-weight: bold;
+  color: #1a1a1a;
+  white-space: nowrap; /* Título numa só linha */
+  margin: 0;
+}
+
+.search-container {
+  flex: 1; /* Faz a barra ocupar o espaço central */
+  display: flex;
+  align-items: center;
+  position: relative;
+  max-width: 600px; /* Limita o tamanho para não ficar "infinita" */
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px 15px 10px 45px;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  font-size: 16px;
+  outline: none;
+  background-color: #f9f9f9;
+}
+
+.search-icon {
+  position: absolute;
+  left: 15px;
+  color: #888;
+  font-size: 18px;
+}
+
+.btn-add {
+  background-color: #2b4d8f;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap; /* Botão numa só linha */
+}
