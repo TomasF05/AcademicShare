@@ -30,7 +30,7 @@ const Header = () => {
           📚 Disciplinas
         </div>
 
-        <button className="btn-submit">Submeter</button>
+        
 
 
         {/* PERFIL (SEM O BOTÃO SAIR DENTRO) */}

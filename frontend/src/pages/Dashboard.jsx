@@ -150,7 +150,7 @@ const disciplinasFiltradas = disciplinas.filter(disc =>
           <div className="nav-item">
             <span className="nav-icon">📚</span> Disciplinas
           </div>
-          <button className="btn-submit">Submeter</button>
+          
           
           {/* PERFIL (SEM O BOTÃO SAIR DENTRO) */}
           <div className="user-profile-container">

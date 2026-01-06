@@ -107,6 +107,24 @@ const AulaDetalhe = () => {
     }
   };
 
+  const handleDownload = async (fileUrl, fileName) => {
+    try {
+      const response = await fetch(fileUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = fileName || 'download';
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Erro ao baixar o ficheiro:", error);
+      alert("Não foi possível transferir o ficheiro.");
+    }
+  };
+
   return (
     <div className="dashboard-container">
       <Header />
@@ -116,8 +134,20 @@ const AulaDetalhe = () => {
           ← Voltar para Disciplina
         </div>
 
-        <h2 className="main-title">{aula.titulo}</h2>
-        <p>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: '10px' }}>
+          <h2 className="main-title" style={{ margin: 0 }}>{aula.titulo}</h2>
+          
+          {tab === "materiais" && (
+            <button
+              className="btn-add"
+              onClick={() => setShowMaterialModal(true)}
+            >
+              + Adicionar material
+            </button>
+          )}
+        </div>
+
+        <p style={{ marginBottom: '30px' }}>
           {new Date(aula.data).toLocaleDateString("pt-PT")} · {aula.descricao}
         </p>
 
@@ -137,15 +167,6 @@ const AulaDetalhe = () => {
               Chat
             </button>
           </div>
-
-          {tab === "materiais" && (
-            <button
-              className="btn-add"
-              onClick={() => setShowMaterialModal(true)}
-            >
-              + Adicionar material
-            </button>
-          )}
         </div>
 
         {/* CONTEÚDO */}
@@ -171,28 +192,45 @@ const AulaDetalhe = () => {
                       {new Date(material.createdAt).toLocaleDateString("pt-PT")}
                     </span>
 
-                    {material.tipo === "file" ? (
-                      <a
-                      href={`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}${material.url}`}                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        📄 Abrir ficheiro
-                      </a>
-                    ) : (
-                      <a
-                        href={material.url}
-                        target="_blank"
-                        rel="noreferrer"
-                      >
-                        🔗 Abrir link
-                      </a>
-                    )}
+                    <div style={{ display: 'flex', gap: '10px', marginTop: '10px' }}>
+                      {material.tipo === "file" ? (
+                          <>
+                            <a
+                              href={`${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}${material.url}`}
+                              target="_blank"
+                              rel="noreferrer"
+                              className="btn-link"
+                            >
+                              📄 Abrir
+                            </a>
+                            <button
+                              onClick={() => handleDownload(
+                                `${import.meta.env.VITE_BACKEND_URL.replace(/\/$/, '')}${material.url}`, 
+                                material.titulo
+                              )}
+                              className="btn-link"
+                              style={{ background: 'none', border: 'none', cursor: 'pointer', color: '#2ecc71', padding: 0, fontWeight: '600' }}
+                            >
+                              📥 Download
+                            </button>
+                          </>
+                        ) : (
+                          <a
+                            href={material.url.startsWith('http') ? material.url : `https://${material.url}`}
+                            target="_blank"
+                            rel="noreferrer"
+                            className="btn-link"
+                          >
+                            🔗 Abrir Link
+                          </a>
+                        )}
+                      </div>
+                    </div>
                   </div>
-                </div>
-              ))}
-            </div>
-          )
-        )}
+                ))}
+              </div>
+            ) 
+          )}
 
           {tab === "chat" && (
             <ChatAula aulaId={id} />
