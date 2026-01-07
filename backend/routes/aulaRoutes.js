@@ -4,7 +4,8 @@ const { protect } = require("../middleware/authMiddleware");
 const {
   addAula,
   getAulasByDisciplina,
-  getAulaById
+  getAulaById,
+  updateAula,
 } = require("../controllers/aulaController");
 
 const Message = require("../models/Message");
@@ -15,6 +16,7 @@ router.get("/disciplinas/:disciplinaId/aulas", protect, getAulasByDisciplina);
 
 // /api/aulas/:id
 router.get("/aulas/:id", protect, getAulaById);
+router.put("/aulas/:id", protect, updateAula);
 
 router.get("/aulas/:id/messages", protect, async (req, res) => {
   try {

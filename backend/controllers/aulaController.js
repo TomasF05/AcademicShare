@@ -1,5 +1,6 @@
 const Aula = require("../models/Aula");
 
+// Criar aula
 const addAula = async (req, res) => {
   const { titulo, descricao, data } = req.body;
 
@@ -22,6 +23,7 @@ const addAula = async (req, res) => {
   }
 };
 
+// Listar aulas por disciplina
 const getAulasByDisciplina = async (req, res) => {
   try {
     const aulas = await Aula.find({ disciplina: req.params.disciplinaId })
@@ -33,6 +35,7 @@ const getAulasByDisciplina = async (req, res) => {
   }
 };
 
+// Obter aula por id
 const getAulaById = async (req, res) => {
   try {
     const aula = await Aula.findById(req.params.id);
@@ -47,8 +50,37 @@ const getAulaById = async (req, res) => {
   }
 };
 
+// Editar aula (só quem criou ou admin)
+const updateAula = async (req, res) => {
+  try {
+    const aula = await Aula.findById(req.params.id);
+
+    if (!aula) {
+      return res.status(404).json({ message: "Aula não encontrada" });
+    }
+
+    // Permissões
+    if (aula.user.toString() !== req.user.id && req.user.role !== "admin") {
+      return res
+        .status(401)
+        .json({ message: "Não tens permissão para editar esta aula" });
+    }
+
+    const aulaAtualizada = await Aula.findByIdAndUpdate(
+      req.params.id,
+      req.body,
+      { new: true }
+    );
+
+    res.status(200).json(aulaAtualizada);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao atualizar aula" });
+  }
+};
+
 module.exports = {
   addAula,
   getAulasByDisciplina,
   getAulaById,
+  updateAula,
 };
