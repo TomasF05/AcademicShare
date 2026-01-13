@@ -37,7 +37,7 @@ app.get('/', (req, res) => {
     res.status(200).send('Academic Share a funcionar!');
 });
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 5000;
 
 server.listen(PORT, () => {
     console.log(`Servidor e chat a correr na porta ${PORT}`);
