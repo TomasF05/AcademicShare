@@ -78,9 +78,34 @@ const updateAula = async (req, res) => {
   }
 };
 
+// Arquivar e ativar aula
+const toggleArchiveAula = async (req, res) => {
+  try {
+    const aula = await Aula.findById(req.params.id);
+
+    if (!aula) {
+      return res.status(404).json({ message: "Aula não encontrada" });
+    }
+
+    // Permissões
+    if (aula.user.toString() !== req.user.id && req.user.role !== "admin") {
+      return res.status(401).json({ message: "Sem permissão" });
+    }
+
+    aula.isArchived = !aula.isArchived;
+    await aula.save();
+
+    res.status(200).json(aula);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao arquivar aula" });
+  }
+};
+
+
 module.exports = {
   addAula,
   getAulasByDisciplina,
   getAulaById,
   updateAula,
+  toggleArchiveAula,
 };

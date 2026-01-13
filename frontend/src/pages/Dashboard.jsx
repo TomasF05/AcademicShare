@@ -2,7 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import "../styles/dashboard.css";
 import logo from "../assets/logo.png";
-import { Pencil, Trash2 } from 'lucide-react';
+import { Pencil, Archive, RotateCcw } from 'lucide-react';  //Tirou-se o Trash2
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -79,7 +79,9 @@ const Dashboard = () => {
         setIsSaving(true);
 
         // Se estivermos a editar, usamos PUT e o ID. Se não, usamos POST normal.
-        const url = isEditing ? `${API_URL}/disciplinas/${editId}` : `${API_URL}/disciplinas`;
+        const url = isEditing 
+          ? `${API_URL}/disciplinas/${editId}` 
+          : `${API_URL}/disciplinas`;
         const method = isEditing ? "PUT" : "POST";
 
         try {
@@ -107,7 +109,7 @@ const Dashboard = () => {
   };
 
 
-const handleDelete = async (id) => {
+/*const handleDelete = async (id) => {
   if (!window.confirm("Tens a certeza que queres eliminar esta disciplina?")) return;
 
   const token = localStorage.getItem("token");
@@ -130,12 +132,27 @@ const handleDelete = async (id) => {
   } catch (err) {
     console.error("Erro na ligação:", err);
   }
-};
+};*/
+
+// Arquivar/ Ativar disciplina
+const handleToggleArchive = async (id) => {
+    const token = localStorage.getItem("token");
+    await fetch(`${API_URL}/disciplinas/${id}/archive`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchDisciplinas();
+  };
 
 const disciplinasFiltradas = disciplinas.filter(disc => 
   disc.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
   disc.descricao.toLowerCase().includes(searchTerm.toLowerCase())
 );
+
+const disciplinasVisiveis = disciplinasFiltradas.filter((disc) => {
+    if (!disc.isArchived) return true;
+    return disc.user?._id === user?.id || user?.role === "admin";
+  });
 
   return (
     <div className="dashboard-container">
@@ -211,9 +228,9 @@ const disciplinasFiltradas = disciplinas.filter(disc =>
         </div>
 
        <div className="disciplinas-grid">
-          {disciplinasFiltradas.length > 0 ? (
-            disciplinasFiltradas.map((disc) => (
-              <div key={disc._id} className="disciplina-card" onClick={() => navigate(`/disciplinas/${disc._id}`)} style={{ cursor: "pointer"}}>
+          {disciplinasVisiveis.length > 0 ? (
+            disciplinasVisiveis.map((disc) => (
+              <div key={disc._id} className={`disciplina-card ${ disc.isArchived ? "archived" : "" }`} onClick={() => !disc.isArchived && navigate(`/disciplinas/${disc._id}`)} style={{ cursor: "pointer"}}>
                 <div className="card-content">
                   <h3>{disc.nome}</h3>
                   <p>{disc.descricao}</p>
@@ -223,11 +240,26 @@ const disciplinasFiltradas = disciplinas.filter(disc =>
 
                   {(disc.user?._id === user?.id || user?.role === 'admin') && (
                     <div className="card-actions">
-                      <button onClick={(e) => { e.stopPropagation(); handleOpenEdit(disc); }} className="btn-icon edit">
-                        <Pencil size={18} />
-                      </button>
-                      <button onClick={(e) => { e.stopPropagation(); handleDelete(disc._id); }} className="btn-icon delete">
-                        <Trash2 size={18} />
+                        {!disc.isArchived && (
+                        <button className="btn-icon edit" onClick={(e) => { 
+                          e.stopPropagation(); 
+                          handleOpenEdit(disc);
+                          }}
+                        >
+                          <Pencil size={18} />
+                        </button>
+                      )}
+                     <button
+                        className="btn-icon" onClick={(e) => {
+                          e.stopPropagation();
+                          handleToggleArchive(disc._id);
+                        }}
+                      >
+                        {disc.isArchived ? (
+                          <RotateCcw size={18} />
+                        ) : (
+                          <Archive size={18} />
+                        )}
                       </button>
                     </div>
                   )}

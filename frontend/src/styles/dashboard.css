@@ -459,3 +459,27 @@
   cursor: pointer;
   white-space: nowrap; /* Botão numa só linha */
 }
+
+
+/*Afeta as disciplinas arquivadas*/
+.disciplina-card.archived {
+  opacity: 0.5;
+  background-color: #f1f5f9;
+  border-style: dashed;
+  cursor: not-allowed;
+}
+
+.disciplina-card.archived:hover { /* Faz perder o movimento ao ir clicar*/
+  transform: none;
+  box-shadow: none;
+  border-color: #94a3b8;
+  cursor: default;
+}
+
+/* Afeta as aulas arquivadas*/
+.material-card.archived {
+  opacity: 0.5;
+  background-color: #f5f6f8;
+  border: 1px dashed #c7cbd6;
+}
+

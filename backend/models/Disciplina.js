@@ -13,6 +13,10 @@ const disciplinaSchema = mongoose.Schema({
     descricao: {
         type: String,
         required: [true, 'Por favor, adicione uma breve descrição']
+    },
+    isArchived: {
+      type: Boolean,
+      default: false,
     }
 }, {
     timestamps: true

@@ -6,6 +6,7 @@ const {
   getAulasByDisciplina,
   getAulaById,
   updateAula,
+  toggleArchiveAula,
 } = require("../controllers/aulaController");
 
 const Message = require("../models/Message");
@@ -17,6 +18,8 @@ router.get("/disciplinas/:disciplinaId/aulas", protect, getAulasByDisciplina);
 // /api/aulas/:id
 router.get("/aulas/:id", protect, getAulaById);
 router.put("/aulas/:id", protect, updateAula);
+router.patch("/aulas/:id/archive", protect, toggleArchiveAula);
+
 
 router.get("/aulas/:id/messages", protect, async (req, res) => {
   try {

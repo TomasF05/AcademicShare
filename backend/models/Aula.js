@@ -22,7 +22,11 @@ const aulaSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true,
     ref: "User",
-  }
+  },
+  isArchived: {
+    type: Boolean,
+    default: false,
+  },
 }, {
   timestamps: true
 });

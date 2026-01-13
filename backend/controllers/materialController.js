@@ -104,8 +104,37 @@ const updateMaterial = async (req, res) => {
   }
 };
 
+// Arquivar e ativar material
+const toggleArchiveMaterial = async (req, res) => {
+  try {
+    const material = await Material.findById(req.params.id);
+
+    if (!material) {
+      return res.status(404).json({ message: "Material não encontrado" });
+    }
+
+    if (
+      material.user.toString() !== req.user.id &&
+      req.user.role !== "admin"
+    ) {
+      return res.status(401).json({
+        message: "Não tens permissão para arquivar este material",
+      });
+    }
+
+    material.isArchived = !material.isArchived;
+    await material.save();
+
+    res.status(200).json(material);
+  } catch (error) {
+    res.status(500).json({ message: "Erro ao arquivar material" });
+  }
+};
+
+
 module.exports = {
   addMaterial,
   getMateriaisByAula,
   updateMaterial,
+  toggleArchiveMaterial,
 };

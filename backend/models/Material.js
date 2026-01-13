@@ -28,6 +28,10 @@ const materialSchema = mongoose.Schema(
       required: true,
       ref: "User",
     },
+    isArchived: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

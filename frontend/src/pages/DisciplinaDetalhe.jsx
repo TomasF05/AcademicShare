@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/dashboard.css"; // reaproveita o mesmo CSS
 import logo from "../assets/logo.png";
 import Header from "../components/Header";
-import { Pencil } from "lucide-react";
+import { Pencil, Archive, RotateCcw} from "lucide-react";
 
 const DisciplinaDetalhe = () => {
   const { id } = useParams(); // disciplinaId
@@ -27,28 +27,31 @@ const DisciplinaDetalhe = () => {
   const [data, setData] = useState("");
 
 
+  const token = localStorage.getItem("token");
+
+  
+  const fetchDisciplina = async () => {
+    const res = await fetch(`${API_URL}/disciplinas`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    setDisciplina(data.find((d) => d._id === id));
+  };
+
+  
+  const fetchAulas = async () => {
+    const res = await fetch(`${API_URL}/disciplinas/${id}/aulas`, {
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    const data = await res.json();
+    if (res.ok) setAulas(data);
+  };
+
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    const fetchDisciplina = async () => {
-      const res = await fetch(`${API_URL}/disciplinas`, {
-        headers: { Authorization: `Bearer ${token}` },
-      }, [id, API_URL]); // dependência
-      const data = await res.json();
-      setDisciplina(data.find((d) => d._id === id));
-    };
-
-    const fetchAulas = async () => {
-      const res = await fetch(`${API_URL}/disciplinas/${id}/aulas`, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-      const data = await res.json();
-      if (res.ok) setAulas(data);
-    };
-
     fetchDisciplina();
     fetchAulas();
-  }, [id, API_URL]);
+  }, [id]);
+
 
 
   // Modal controls
@@ -139,6 +142,23 @@ const DisciplinaDetalhe = () => {
     }
   };
 
+  // Arquivar/ ativar aulas
+  const handleToggleArchiveAula = async (aulaId) => {
+    const token = localStorage.getItem("token");
+
+    await fetch(`${API_URL}/aulas/${aulaId}/archive`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+
+    fetchAulas();
+  };
+  
+  // Filtro de visibilidade
+  const aulasVisiveis = aulas.filter((aula) => {
+    if (!aula.isArchived) return true;
+    return aula.user === user?.id || user?.role === "admin";
+  });
 
   return (
     <div className="dashboard-container">
@@ -155,17 +175,15 @@ const DisciplinaDetalhe = () => {
           <button className="btn-add" onClick={handleOpenCreate}>
             + Nova Aula
           </button>
-
-
         </div>
 
         <div className="disciplinas-grid">
-          {aulas.length > 0 ? (
-            aulas.map((aula) => (
+          {aulasVisiveis.length > 0 ? (
+            aulasVisiveis.map((aula) => (
               <div
                 key={aula._id}
-                className="disciplina-card"
-                onClick={() => navigate(`/aulas/${aula._id}`)}
+                className={`disciplina-card ${aula.isArchived ? "archived" : ""}`}
+                onClick={() => !aula.isArchived && navigate(`/aulas/${aula._id}`)}
                 style={{ cursor: "pointer" }}
               >
                 <div>
@@ -180,14 +198,29 @@ const DisciplinaDetalhe = () => {
 
                   {(aula.user === user?.id || user?.role === "admin") && (
                     <div className="card-actions">
+                      {!aula.isArchived && (
+                        <button
+                          className="btn-icon edit"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleOpenEdit(aula);
+                          }}
+                        >
+                          <Pencil size={18} />
+                        </button>
+                      )}
                       <button
-                        className="btn-icon edit"
+                        className="btn-icon"
                         onClick={(e) => {
                           e.stopPropagation();
-                          handleOpenEdit(aula);
+                          handleToggleArchiveAula(aula._id);
                         }}
                       >
-                        <Pencil size={18} />
+                        {aula.isArchived ? (
+                          <RotateCcw size={18} />
+                        ) : (
+                          <Archive size={18} />
+                        )}
                       </button>
                     </div>
                   )}

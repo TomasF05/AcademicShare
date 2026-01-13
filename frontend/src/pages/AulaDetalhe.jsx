@@ -3,7 +3,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import "../styles/dashboard.css";
 import Header from "../components/Header";
 import ChatAula from "./ChatAula";
-import { Pencil } from "lucide-react";
+import { Pencil, Archive, RotateCcw } from "lucide-react";
 
 const AulaDetalhe = () => {
   const { id } = useParams(); // aulaId
@@ -33,21 +33,19 @@ const AulaDetalhe = () => {
   const [link, setLink] = useState("");
   const [file, setFile] = useState(null);
 
+
+  const token = localStorage.getItem("token");
+
   // Fetch aula + materiais
   const fetchMateriais = async () => {
-    const token = localStorage.getItem("token");
-
     const res = await fetch(`${API_URL}/aulas/${id}/materiais`, {
       headers: { Authorization: `Bearer ${token}` },
     });
-
     const data = await res.json();
     if (res.ok) setMateriais(data);
   };
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-
     const fetchAula = async () => {
       const res = await fetch(`${API_URL}/aulas/${id}`, {
         headers: { Authorization: `Bearer ${token}` },
@@ -182,6 +180,24 @@ const AulaDetalhe = () => {
     window.URL.revokeObjectURL(url);
   };
 
+
+  //Arquivar/ ativar material
+  const handleToggleArchiveMaterial = async (materialId) => {
+    await fetch(`${API_URL}/materiais/${materialId}/archive`, {
+      method: "PATCH",
+      headers: { Authorization: `Bearer ${token}` },
+    });
+    fetchMateriais();
+  };
+
+  // Visivilidade
+  const materiaisVisiveis = materiais.filter((material) => {
+    if (!material.isArchived) return true;
+    return (
+      material.user?._id === user?.id || user?.role === "admin"
+    );
+  });
+
   return (
     <div className="dashboard-container">
       <Header />
@@ -193,7 +209,6 @@ const AulaDetalhe = () => {
 
         <div className="content-header">
           <h2 className="main-title">{aula.titulo}</h2>
-
           {tab === "materiais" && (
             <button className="btn-add" onClick={handleOpenCreateMaterial}>
               + Adicionar material
@@ -223,14 +238,14 @@ const AulaDetalhe = () => {
 
         {/* MATERIAIS */}
         {tab === "materiais" &&
-          (materiais.length === 0 ? (
+          (materiaisVisiveis.length === 0 ? (
             <div className="empty-state">
               <p>Ainda não há materiais para esta aula.</p>
             </div>
           ) : (
             <div className="disciplinas-grid">
-              {materiais.map((material) => (
-                <div key={material._id} className="material-card">
+              {materiaisVisiveis.map((material) => (
+                <div key={material._id} className={`material-card ${ material.isArchived ? "archived" : ""}`}>
                   <h3>{material.titulo}</h3>
                   {material.descricao && <p>{material.descricao}</p>}
 
@@ -242,12 +257,29 @@ const AulaDetalhe = () => {
 
                     {(material.user?._id === user?.id ||
                       user?.role === "admin") && (
-                      <button
-                        className="btn-icon edit"
-                        onClick={() => handleOpenEditMaterial(material)}
-                      >
-                        <Pencil size={18} />
-                      </button>
+                      <div className="card-actions">
+                        {!material.isArchived && (
+                          <button
+                            className="btn-icon edit"
+                            onClick={() => handleOpenEditMaterial(material)}
+                          >
+                            <Pencil size={18} />
+                          </button>
+                        )}
+
+                        <button
+                          className="btn-icon"
+                          onClick={() =>
+                            handleToggleArchiveMaterial(material._id)
+                          }
+                        >
+                          {material.isArchived ? (
+                            <RotateCcw size={18} />
+                          ) : (
+                            <Archive size={18} />
+                          )}
+                        </button>
+                      </div>
                     )}
                   </div>
 
