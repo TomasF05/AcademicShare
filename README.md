@@ -2,8 +2,12 @@
 
 # Plataforma de Partilha de Materiais Académicos
 
-## GitHub
+## Vercel
 
+https://academic-share-three.vercel.app/
+
+## GitHub
+https://github.com/TomasF05/AcademicShare
 
 ## Autoria
 - Tomás Felicíssimo nº31375
