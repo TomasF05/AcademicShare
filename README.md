@@ -41,14 +41,14 @@ A estrutura de dados foi modelada em **MongoDB** utilizando o **Mongoose**, foca
 
 ### Gestão de Disciplinas e Aulas
 - **Dashboard Dinâmico**: Visualização de todas as disciplinas com sistema de **pesquisa em tempo real** por nome.
-- **CRUD de Disciplinas**: Possibilidade de criar, editar e eliminar disciplinas (apenas pelo criador ou admin).
+- **CRUD de Disciplinas**: Possibilidade de criar, editar e arquivar disciplinas (apenas pelo criador ou admin).
 - **Organização por Aulas**: Cada disciplina contém a sua lista de aulas agendadas.
 
 ### Partilha de Materiais
 - **Upload de Ficheiros**: Suporte para submissão de ficheiros PDF utilizando o middleware Multer.
 - **Links Externos**: Possibilidade de partilhar links úteis (Ex: Google Drive, vídeos, sites).
 - **Download Direto**: Funcionalidade de download via Blob para garantir a transferência de ficheiros entre diferentes domínios (CORS).
-- **Eliminação de Materiais**: Gestão de ficheiros submetidos, permitindo a remoção tanto da base de dados como do armazenamento físico.
+- **Arquivação de Materiais**: Gestão de ficheiros submetidos, permitindo o arquivamento do materiais, sem que seja eliminado da base de dados, só fisicamente.
 
 ### Comunicação (Chat)
 - **Chat de Aula**: Sistema de chat em tempo real por aula, permitindo a discussão de dúvidas específicas sobre os materiais partilhados.
