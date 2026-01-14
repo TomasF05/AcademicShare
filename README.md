@@ -101,3 +101,28 @@ A estrutura de dados foi modelada em **MongoDB** utilizando o **Mongoose**, foca
     cd frontend
     npm run dev
    ```
+
+## 5. Manual de Utilização
+
+### 5.1. Autenticação e Perfil
+* **Registo/Login**: Ao aceder à aplicação, o utilizador deve autenticar-se. Se não tiver conta, pode registar-se fornecendo nome, email e palavra-passe.
+* **Gestão de Perfil**: No ícone de utilizador no cabeçalho, é possível aceder às configurações para visualizar dados pessoais ou alterar a palavra-passe atual.
+
+### 5.2. Dashboard e Disciplinas
+* **Visualizar Disciplinas**: O Dashboard exibe cartões com todas as disciplinas criadas. Cada cartão mostra o título, descrição e quem a criou.
+* **Pesquisa**: Utiliza a barra de pesquisa central para filtrar disciplinas instantaneamente por nome.
+* **Criar Disciplina**: Clique no botão "+ Nova Disciplina" para abrir o modal de criação.
+
+### 5.3. Gestão de Materiais na Aula
+Ao selecionar uma disciplina e entrar numa aula específica, terá acesso ao painel de materiais:
+* **Adicionar Material**: Clique em "+ Adicionar material" no topo da página.
+    * **Ficheiro**: Selecione um PDF do seu computador para upload.
+    * **Link**: Introduza uma URL externa (ex: slides, vídeos).
+* **Interagir com Materiais**:
+    * **Abrir**: Abre o PDF ou o link num novo separador.
+    * **Download**: Descarrega o ficheiro PDF diretamente para o seu dispositivo através do botão "Download".
+* **Sistema de Arquivo (Aulas e Materiais)**: O autor pode arquivar disciplinas, aulas ou materiais específicos. Uma vez arquivados, os elementos aparecem com tom acinzentado para o autor, indicando que o conteúdo está arquivado, até que o autor decida reativá-los, enquanto que para os outros utilizadores desaparece e só volta a aparecer quando o autor decidir desarquivar.
+
+### 5.4. Chat em Tempo Real
+* **Alternar entre Abas**: Utilize as abas "Materiais" e "Chat" para mudar o conteúdo da página.
+* **Conversar**: No separador de Chat, pode enviar mensagens em tempo real para todos os colegas que estiverem a visualizar a mesma aula, facilitando o esclarecimento de dúvidas sobre os materiais partilhados.
